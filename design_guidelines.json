@@ -1,0 +1,159 @@
+{
+  "app_name": "Lexis",
+  "personality": "3 Editorial Mobile LIGHT",
+  "personality_one_liner": "A calm, text-first daily journal for your vocabulary, focusing on beautiful typography, generous breathing room, and reflective learning over gamification.",
+  "color": {
+    "surface": "#FAF9F6",
+    "onSurface": "#1C1917",
+    "surfaceSecondary": "#F5F5F0",
+    "onSurfaceSecondary": "#44403C",
+    "surfaceTertiary": "#EAE9E4",
+    "onSurfaceTertiary": "#57534E",
+    "surfaceInverse": "#1C1917",
+    "onSurfaceInverse": "#FAF9F6",
+    "brand": "#A16207",
+    "brandPrimary": "#A16207",
+    "onBrandPrimary": "#FFFFFF",
+    "brandSecondary": "#CA8A04",
+    "onBrandSecondary": "#1C1917",
+    "brandTertiary": "#FEF08A",
+    "onBrandTertiary": "#713F12",
+    "success": "#4D7C0F",
+    "onSuccess": "#FFFFFF",
+    "warning": "#D97706",
+    "onWarning": "#FFFFFF",
+    "error": "#B91C1C",
+    "onError": "#FFFFFF",
+    "info": "#44403C",
+    "onInfo": "#FFFFFF",
+    "border": "#E7E5DF",
+    "borderStrong": "#D6D3CD",
+    "divider": "#E7E5DF"
+  },
+  "typography": {
+    "displayFontFamily": "Cormorant Garamond",
+    "textFontFamily": "Geist",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Generous vertical breathing room. Use whitespace and typography for layout hierarchy instead of cards and shadows.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": "0",
+  "navigation": "bottom_tabs",
+  "icon_set": "Feather",
+  "glassmorphism": {
+    "enabled": "false",
+    "do's": [],
+    "dont's": [
+      "Skip glass entirely as the Editorial personality relies on solid paper surfaces, borders, and whitespace for hierarchy."
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Auth",
+      "purpose": "Onboard users into the calm, reflective learning space with a serene background.",
+      "states": {
+        "loading": "Centered spinner",
+        "empty": "N/A",
+        "error": "Readable text with retry CTA"
+      },
+      "layout": "Hero image (reading aesthetic) at the top with a top-to-bottom vertical gradient scrim (transparent to >=70% surfaceInverse). Clean inputs below, and a single solid primary CTA sticky at the bottom."
+    },
+    {
+      "name": "Today's Word (Home)",
+      "purpose": "Introduce the single daily word, its phonetic spelling, meaning, and an example sentence.",
+      "states": {
+        "loading": "Centered spinner",
+        "empty": "Illustration + short sentence + CTA",
+        "error": "Readable message + Retry"
+      },
+      "layout": "Editorial full-width structure. Large display serif title at the top, phonetic spelling, audio playback icon. Content block for definition and italicized example sentence. A prominent 'Practice' primary CTA sticky at the bottom."
+    },
+    {
+      "name": "Practice & Feedback",
+      "purpose": "User enters 3 sentences using the word and receives AI scoring/feedback.",
+      "states": {
+        "loading": "Centered spinner during AI scoring",
+        "empty": "N/A",
+        "error": "Readable message + Retry"
+      },
+      "layout": "Focus mode. Word context at the top (smaller). 3 text input fields stacked with generous padding. Form labels above inputs. 'Submit for Feedback' sticky CTA at the bottom inside KeyboardAvoidingView."
+    },
+    {
+      "name": "Word Library",
+      "purpose": "Browse previously unlocked words and view the current learning streak.",
+      "states": {
+        "loading": "Centered spinner",
+        "empty": "Calm illustration stating no words unlocked yet.",
+        "error": "Readable message + Retry"
+      },
+      "layout": "Header section features the grand library image backdrop with a gradient scrim and streak metrics overlaid in onSurfaceInverse text. Below, a minimal edge-to-edge list of unlocked words using hairline dividers."
+    },
+    {
+      "name": "Revision Flow",
+      "purpose": "Set up and execute the revision session, grading meaning and sentence inputs.",
+      "states": {
+        "loading": "Centered spinner between steps",
+        "empty": "N/A",
+        "error": "Readable message + Retry"
+      },
+      "layout": "Stepped/paged screens for each word being revised. Minimal text, single input focused. Upon finishing all words, a full-screen summary score card appears with feedback and a 'Finish' CTA."
+    }
+  ],
+  "images": {
+    "auth_hero": {
+      "url": "https://images.pexels.com/photos/5634672/pexels-photo-5634672.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "alt": "Woman enjoying a peaceful reading moment in a sunlit bedroom, cozy atmosphere."
+    },
+    "library_header": {
+      "url": "https://images.pexels.com/photos/30484324/pexels-photo-30484324.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "alt": "A grand library interior with tall bookshelves, skylights, and people studying."
+    }
+  },
+  "haptics": {
+    "primary_button_press": "impactLight",
+    "tab_change": "selection",
+    "word_unlocked": "notificationSuccess",
+    "feedback_received": "impactMedium"
+  },
+  "instructions_to_main_agent": [
+    "STRICTLY use 'Cormorant Garamond' (display serif) and 'Geist' (sans-serif text). Cap font weights at 500 max. Do NOT use 600, 700, or bold variants.",
+    "Follow the Editorial LIGHT personality. Do NOT use any glassmorphism, blur, or heavy shadows. Use whitespace and 0.5pt hairline borders (#E7E5DF) for separation.",
+    "Place a gradient-to-dark scrim over any background images (auth_hero, library_header) to ensure text readability (Layer 0: image, Layer 1: linear gradient 0% transparent to 70%+ surfaceInverse, Layer 2: text using onSurfaceInverse).",
+    "Ensure 'Submit Sentences' flow uses sticky CTA buttons anchored above the keyboard within a KeyboardAvoidingView.",
+    "Maintain the strict ban on blues, purples, and indigos. Use the defined Ochre brand color (#A16207) for emphasis and active states.",
+    "Do NOT gamify the experience with badges, confetti, or loud colors. Keep the tone reflective and journal-like.",
+    "Use Feather icons consistently with a single stroke weight. Avoid mixing icon sets."
+  ]
+}
