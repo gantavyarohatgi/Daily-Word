@@ -1,0 +1,39 @@
+{
+  "summary": "Backend testing complete for Lexis vocabulary app. All 23 pytest cases passed (100% success rate) across auth, today/words, practice, revision flow, and stats. Covered: signup (with duplicate 409), login (with 401 cases), /auth/me (token validation + no secrets leaked), /today (Gemini-driven generation, idempotency same day, uniqueness across days via unlocked_date rewind), /words listing+sort+practiced flag, /words/{id} owner+404, /practice (3-sentence scoring 0-30, 400 on empty, 404 unknown word, practiced=true post-submit), /revision/start (400 when <5 words, success returning words[] with index/total), /revision/answer (404 unknown rev, 400 empty meaning, 422 fewer than 3 sentences, success returning meaning_score 0-10 + sentence_feedbacks + overall_score 0-40), /revision/{id}/finish (correct total/max/percentage, idempotent finished_at on repeat), /revision/history (only finished, desc sort, percentage computed), /stats (all fields incl can_revise=total_words>=5).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/conftest.py",
+    "/app/backend/tests/test_auth.py",
+    "/app/backend/tests/test_words_and_practice.py",
+    "/app/backend/tests/test_revision_and_stats.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py is a single ~625-line file. Acceptable for MVP but consider splitting into routers/auth.py, routers/words.py, routers/revision.py, services/llm.py for maintainability as it grows past 700 lines.",
+    "/api/revision/answer accepts a word_id that is not part of the revision's word_ids — the API still scores it and increments total_score, which can let users pad their scores. Recommend validating that req.word_id is in rev['word_ids'] before scoring.",
+    "/today uniqueness relies on excluding already-learned words in the prompt; if Gemini occasionally repeats, generate_new_word retries up to 3 times but then raises 503. A DB-side uniqueness fallback (e.g., synthetic generation or just rejecting duplicates) would harden this. (Test passed in this run.)",
+    "Streak logic in /stats may not reflect a missed-days-skipped policy precisely as described in PRD; consider documenting expected behaviour for gaps."
+  ],
+  "updated_files": [
+    "/app/backend/tests/conftest.py (new)",
+    "/app/backend/tests/test_auth.py (new)",
+    "/app/backend/tests/test_words_and_practice.py (new)",
+    "/app/backend/tests/test_revision_and_stats.py (new)"
+  ],
+  "success_rate": {"backend": "100% (23/23)", "frontend": "not tested (backend-only request)"},
+  "seed_data_creation": "Tests create fresh users per session (testbe+<ts>@x.com, testbe_rev+, testbe_revflow+) and seed 3 and 6 synthetic words directly into Mongo for the two revision-related users. All created users/words/practices/revisions are cleaned up via session teardown.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Pytest suite under /app/backend/tests covers all backend endpoints. BASE_URL is read from EXPO_PUBLIC_BACKEND_URL. Mongo is accessed at mongodb://localhost:27017/lexis_db. Re-run with: `pytest /app/backend/tests/ -v --junitxml=/app/test_reports/pytest/pytest_results.xml`. Note: /today generation calls Gemini (~5-10s each); test_today_uniqueness_across_days triggers two generations (~20s total). Revision flow tests invoke Gemini once per seeded word (6 calls).",
+  "rca_of_issue": "No bugs found in this iteration."
+}
