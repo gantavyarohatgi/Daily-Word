@@ -486,6 +486,10 @@ async def revision_answer(req: RevisionAnswerReq,
         raise HTTPException(404, "Revision not found")
     if rev.get("finished_at"):
         raise HTTPException(400, "Revision already finished")
+    if req.word_id not in rev.get("word_ids", []):
+        raise HTTPException(400, "This word is not part of the revision")
+    if any(a.get("word_id") == req.word_id for a in rev.get("answers", [])):
+        raise HTTPException(400, "Already answered this word")
     w = await db.words.find_one(
         {"id": req.word_id, "user_id": user["id"]}, {"_id": 0}
     )
