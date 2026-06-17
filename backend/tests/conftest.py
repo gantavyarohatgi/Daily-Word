@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from datetime import datetime, timezone
 
 BASE_URL = os.environ.get("EXPO_PUBLIC_BACKEND_URL",
-                          "https://vocab-revision-hub.preview.emergentagent.com").rstrip("/")
+                          "http://localhost:8000").rstrip("/")
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
 DB_NAME = os.environ.get("DB_NAME", "lexis_db")
 
