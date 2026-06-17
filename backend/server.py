@@ -24,7 +24,7 @@ load_dotenv(ROOT_DIR / '.env')
 # ---- Config ----
 MONGO_URL = os.environ['MONGO_URL']
 DB_NAME = os.environ['DB_NAME']
-EMERGENT_LLM_KEY = os.environ['EMERGENT_LLM_KEY']
+GEMINI_API_KEY = os.environ['GEMINI_API_KEY']
 JWT_SECRET = os.environ['JWT_SECRET']
 JWT_ALG = os.environ.get('JWT_ALGORITHM', 'HS256')
 JWT_EXPIRY_HOURS = int(os.environ.get('JWT_EXPIRY_HOURS', '720'))
@@ -185,13 +185,10 @@ def extract_json(text: str) -> dict:
 
 
 async def llm_chat(system_message: str, user_text: str) -> str:
-    chat = LlmChat(
-        api_key=EMERGENT_LLM_KEY,
-        session_id=str(uuid.uuid4()),
-        system_message=system_message,
-    ).with_model("gemini", GEMINI_MODEL)
-    resp = await chat.send_message(UserMessage(text=user_text))
-    return resp if isinstance(resp, str) else str(resp)
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel(GEMINI_MODEL, system_instruction=system_message)
+    response = model.generate_content(user_text)
+    return response.text
 
 
 # ============== LLM TASKS ==============
